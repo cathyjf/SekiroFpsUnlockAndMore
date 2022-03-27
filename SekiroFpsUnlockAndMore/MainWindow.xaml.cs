@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Timers;
 using System.Windows;
@@ -68,6 +68,7 @@ namespace SekiroFpsUnlockAndMore
         internal RECT _windowRect;
         internal Size _screenSize;
         internal bool _isLegacyVersion = false;
+        internal bool _inQuietMode = false;
 
         internal const string _DATACAVE_SPEEDFIX_POINTER = "speedfixPointer";
         internal const string _DATACAVE_FOV_POINTER = "fovPointer";
@@ -77,10 +78,17 @@ namespace SekiroFpsUnlockAndMore
         internal const string _CODECAVE_CAMADJUST_YAW_XY = "camAdjustYawXY";
         internal const string _CODECAVE_EMBLEM_UPGRADE = "emblemCapUpgrade";
 
-        public MainWindow()
+        public MainWindow(bool quietMode)
         {
             InitializeComponent();
             DataContext = _statusViewModel;
+            if (quietMode)
+            {
+                _inQuietMode = true;
+                ShowInTaskbar = false;
+                WindowState = WindowState.Minimized;
+                Visibility = Visibility.Hidden;
+            }
         }
 
         /// <summary>
@@ -1282,6 +1290,11 @@ namespace SekiroFpsUnlockAndMore
             else
                 UpdateStatus(DateTime.Now.ToString("HH:mm:ss") + " Game unpatched!", Brushes.White);
             _initialStartup = false;
+
+            if (_inQuietMode)
+            {
+                Close();
+            }
         }
 
         /// <summary>

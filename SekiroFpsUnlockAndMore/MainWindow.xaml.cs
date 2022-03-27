@@ -106,8 +106,7 @@ namespace SekiroFpsUnlockAndMore
 
             try
             {
-                HIGHCONTRAST highContrastInfo = new HIGHCONTRAST();
-                highContrastInfo.cbSize = Marshal.SizeOf(typeof(HIGHCONTRAST));
+                HIGHCONTRAST highContrastInfo = new HIGHCONTRAST() { cbSize = Marshal.SizeOf(typeof(HIGHCONTRAST)) };
                 if (SystemParametersInfo(SPI_GETHIGHCONTRAST, (uint)highContrastInfo.cbSize, ref highContrastInfo, 0))
                 {
                     if ((highContrastInfo.dwFlags & HCF_HIGHCONTRASTON) == 1)
@@ -874,8 +873,7 @@ namespace SekiroFpsUnlockAndMore
             if (!this.cbFramelock.IsEnabled || _offset_framelock == 0x0 || !_dataCave_speedfix || !CanPatchGame()) return false;
             if (this.cbFramelock.IsChecked == true)
             {
-                int fps = -1;
-                bool isNumber = Int32.TryParse(this.tbFramelock.Text, out fps);
+                bool isNumber = Int32.TryParse(this.tbFramelock.Text, out int fps);
                 if (fps < 1 || !isNumber)
                 {
                     this.tbFramelock.Text = "60";
